@@ -1,4 +1,7 @@
 import { useRouter } from "next/router";
+import { GoLocation } from "react-icons/go";
+import { AiOutlineHeart } from "react-icons/ai";
+import { BsFillCalendarDateFill } from "react-icons/bs";
 
 export const events = [
   {
@@ -29,16 +32,19 @@ export default function Events() {
         return (
           <div
             key={index}
-            className="flex justify-between bg-gray-600 p-4 mb-4"
+            className="flex justify-between bg-gray-600 p-4 mb-4 rounded cursor-pointer"
             onClick={() => router.push(`/events/${event.id}`)}
           >
             <div>
-              <h1>{event.title}</h1>
-              <p>{event.location}</p>
+              <h1 className="font-semibold text-2xl mb-2">{event.title}</h1>
+              <div className="flex items-center text-gray-300">
+                <GoLocation className="mr-2" />
+                <p>{event.location}</p>
+              </div>
             </div>
             <div>
-              <p>lo</p>
-              <p>go</p>
+              <AiOutlineHeart className="mb-4" size="1.5em" />
+              <BsFillCalendarDateFill size="1.5em" />
             </div>
           </div>
         );

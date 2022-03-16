@@ -7,14 +7,22 @@ export default function Home() {
 
   return (
     <div className="flex flex-col text-center p-4 h-screen bg-gray-800 text-white justify-center">
-      <h1 className="mb-4">Find events close to you</h1>
+      <h1 className="mb-8 text-5xl font-semibold">Find events close to you</h1>
       <button
         onClick={() => router.push("/events")}
-        className="bg-red-400 p-4 mb-4"
+        className="bg-red-400 p-4 mb-4 rounded font-medium"
       >
         Featured Events
       </button>
-      <button className="bg-red-400 p-4 mb-4">All events</button>
+      <button
+        className="p-4 mb-4 rounded font-medium"
+        style={{
+          background: "none",
+          border: "4px solid rgb(248 113 113 / var(--tw-bg-opacity))",
+        }}
+      >
+        All events
+      </button>
     </div>
   );
 }
