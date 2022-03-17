@@ -2,20 +2,24 @@ import React from "react";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoMdMail } from "react-icons/io";
 import { useFormik } from "formik";
-import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const LoginForm = ({ setAction }) => {
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     onSubmit: async (inputData, { resetForm }) => {
-      const res = await axios.post(
-        "/api/user/login",
-        { inputData },
-        { validateStatus: () => true }
-      );
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: inputData.email,
+        password: inputData.password,
+      });
+      if (!result.error) router.replace("/");
       resetForm({ inputData: "" });
     },
   });
