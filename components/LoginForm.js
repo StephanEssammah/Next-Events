@@ -11,7 +11,11 @@ const LoginForm = ({ setAction }) => {
       password: "",
     },
     onSubmit: async (inputData, { resetForm }) => {
-      const res = await axios.post("/api/user/login", { inputData });
+      const res = await axios.post(
+        "/api/user/login",
+        { inputData },
+        { validateStatus: () => true }
+      );
       resetForm({ inputData: "" });
     },
   });
@@ -41,7 +45,10 @@ const LoginForm = ({ setAction }) => {
             placeholder="Password"
           ></input>
         </div>
-        <button className="text-white bg-red-400 p-4 rounded-br rounded-b font-medium">
+        <button
+          type="submit"
+          className="text-white bg-red-400 p-4 rounded-br rounded-b font-medium"
+        >
           Login
         </button>
       </form>

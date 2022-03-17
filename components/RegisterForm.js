@@ -12,7 +12,12 @@ const RegisterForm = ({ setAction }) => {
       passwordRepeat: "",
     },
     onSubmit: async (inputData, { resetForm }) => {
-      const res = await axios.post("/api/user/login", { inputData });
+      const res = await axios.post(
+        "/api/user/register",
+        { inputData },
+        { validateStatus: () => true }
+      );
+      console.log(res.data.message);
       resetForm({ passwords: "" });
     },
   });
@@ -56,7 +61,10 @@ const RegisterForm = ({ setAction }) => {
           ></input>
         </div>
 
-        <button className="text-white bg-red-400 p-4 rounded-br rounded-b font-medium">
+        <button
+          type="submit"
+          className="text-white bg-red-400 p-4 rounded-br rounded-b font-medium"
+        >
           Register
         </button>
       </form>
