@@ -1,6 +1,6 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineHeart } from "react-icons/ai";
 import { IoMdListBox } from "react-icons/io";
 import { useRouter } from "next/router";
 
@@ -16,6 +16,11 @@ const Navbar = () => {
       <IoMdListBox
         style={{ cursor: "pointer" }}
         onClick={() => router.push("/events")}
+        size="2em"
+      />
+      <AiOutlineHeart
+        style={{ cursor: "pointer" }}
+        onClick={() => router.push("/favorites")}
         size="2em"
       />
       <CgProfile
