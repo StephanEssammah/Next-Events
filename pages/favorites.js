@@ -24,9 +24,11 @@ const Favorites = ({ session }) => {
 
   return (
     <div className="flex flex-col p-4 h-screen bg-gray-800 text-white">
-      {events.map((event, index) => (
-        <Event event={event} key={index} />
-      ))}
+      <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
+      {events.map((event, index) => {
+        if (index < 1)
+          return <Event favorite={true} event={event} key={index} />;
+      })}
     </div>
   );
 };

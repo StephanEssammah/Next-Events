@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import RegisterForm from "../../components/RegisterForm";
+import { getSession } from "next-auth/react";
 
 export default function Login() {
   const [action, setAction] = useState("Login");
@@ -12,3 +13,15 @@ export default function Login() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+
+  if (session)
+    return {
+      redirect: {
+        destination: "/profile",
+        permanent: false,
+      },
+    };
+};

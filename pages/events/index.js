@@ -25,7 +25,7 @@ export default function Events() {
   return (
     <div className="flex flex-col p-4 h-screen bg-gray-800 text-white">
       {events.map((event, index) => (
-        <Event event={event} key={index} />
+        <Event favorite={false} event={event} key={index} />
       ))}
     </div>
   );

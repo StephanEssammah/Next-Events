@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { GoLocation } from "react-icons/go";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 
-const Event = ({ event }) => {
+const Event = ({ event, favorite }) => {
   const router = useRouter();
   return (
     <div
@@ -19,7 +19,12 @@ const Event = ({ event }) => {
         </div>
       </div>
       <div>
-        <AiOutlineHeart className="mb-4" size="1.5em" />
+        {favorite ? (
+          <AiFillHeart className="mb-4" size="1.5em" />
+        ) : (
+          <AiOutlineHeart className="mb-4" size="1.5em" />
+        )}
+
         <BsFillCalendarDateFill size="1.5em" />
       </div>
     </div>
