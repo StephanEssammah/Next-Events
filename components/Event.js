@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 import { GoLocation } from "react-icons/go";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 
 const Event = ({ event, favorite }) => {
   const router = useRouter();
+  const session = useSession();
+  const [fav, setFav] = useState(favorite);
+
+  const setFavorite = async (e) => {
+    e.stopPropagation();
+    if (session.status === "authenticated") {
+      await axios.post("/api/setFavorite");
+      setFav(true);
+      return;
+    }
+    // SHOW SIGNUP MODAL
+  };
+
+  const unFavorite = async (e) => {
+    e.stopPropagation();
+    await axios.post("/api/unFavorite");
+    setFav(false);
+  };
+
   return (
     <div
       className="flex justify-between bg-gray-600 p-4 mb-4 rounded cursor-pointer"
@@ -19,10 +40,10 @@ const Event = ({ event, favorite }) => {
         </div>
       </div>
       <div>
-        {favorite ? (
-          <AiFillHeart className="mb-4" size="1.5em" />
+        {fav ? (
+          <AiFillHeart onClick={unFavorite} className="mb-4" size="1.5em" />
         ) : (
-          <AiOutlineHeart className="mb-4" size="1.5em" />
+          <AiOutlineHeart onClick={setFavorite} className="mb-4" size="1.5em" />
         )}
 
         <BsFillCalendarDateFill size="1.5em" />
