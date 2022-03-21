@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import Event from "../components/Event";
 import { events } from "./events";
+import { connectToDatabase } from "../utils/db";
 
-const Favorites = ({ session }) => {
+const Favorites = ({ session, favorites }) => {
   const router = useRouter();
 
   if (!session) {
@@ -26,7 +27,7 @@ const Favorites = ({ session }) => {
     <div className="flex flex-col p-4 h-screen bg-gray-800 text-white">
       <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
       {events.map((event, index) => {
-        if (index < 1)
+        if (favorites.includes(event.id))
           return <Event favorite={true} event={event} key={index} />;
       })}
     </div>
@@ -37,8 +38,16 @@ export default Favorites;
 
 export const getServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  const user = session.user.email;
+
+  const client = await connectToDatabase();
+  const collection = client.db("Storyblok-events").collection("users");
+  const document = await collection.findOne({ email: user });
 
   return {
-    props: { session },
+    props: {
+      session: session,
+      favorites: document.favorites,
+    },
   };
 };
