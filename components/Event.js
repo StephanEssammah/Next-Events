@@ -25,7 +25,7 @@ const Event = ({ event, favorite }) => {
 
   const unFavorite = async (e) => {
     e.stopPropagation();
-    await axios.post("/api/unFavorite");
+    await axios.post("/api/unFavorite", { eventId: event.id });
     setFav(false);
   };
 
