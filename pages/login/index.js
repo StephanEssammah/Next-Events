@@ -24,4 +24,8 @@ export const getServerSideProps = async (context) => {
         permanent: false,
       },
     };
+
+  return {
+    props: {},
+  };
 };

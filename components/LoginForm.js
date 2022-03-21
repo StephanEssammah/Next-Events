@@ -51,7 +51,7 @@ const LoginForm = ({ setAction }) => {
         </div>
         <button
           type="submit"
-          className="text-white bg-red-400 p-4 rounded-br rounded-b font-medium"
+          className="text-white bg-red-400 p-4 rounded-b font-medium"
         >
           Login
         </button>
