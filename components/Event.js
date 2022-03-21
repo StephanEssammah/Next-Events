@@ -16,7 +16,7 @@ const Event = ({ event, favorite }) => {
   const setFavorite = async (e) => {
     e.stopPropagation();
     if (session.status === "authenticated") {
-      await axios.post("/api/setFavorite");
+      await axios.post("/api/setFavorite", { eventId: event.id });
       setFav(true);
       return;
     }
