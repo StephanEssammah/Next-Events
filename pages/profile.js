@@ -10,7 +10,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col p-4 pb-20 h-screen bg-gray-800 text-white justify-between">
-      <h1 className="mb-2 text-5xl font-semibold">Favorites</h1>
+      <h1 className="mb-2 text-5xl font-semibold">Profile</h1>
       <div>
         <div className="mb-4">
           <p className="">Email:</p>

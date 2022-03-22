@@ -10,7 +10,7 @@ const Navbar = () => {
   const session = useSession();
 
   return (
-    <div className="fixed bottom-0 bg-slate-600 flex w-full p-4 justify-between text-white">
+    <div className="fixed bottom-0 z-10 bg-slate-600 flex w-full p-4 justify-between text-white">
       <AiOutlineHome
         style={{ cursor: "pointer" }}
         onClick={() => router.push("/")}

@@ -25,7 +25,7 @@ export const events = [
 
 export default function Events({ favorites }) {
   return (
-    <div className="flex flex-col p-4 h-screen bg-gray-800 text-white">
+    <div className="flex flex-col p-4  mb-16 h-full bg-gray-800 text-white">
       {events.map((event, index) =>
         favorites.includes(event.id) ? (
           <Event favorite={true} event={event} key={index} />
