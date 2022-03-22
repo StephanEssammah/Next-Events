@@ -7,18 +7,21 @@ export const events = [
     title: "Kickoff Event",
     location: "Oslo",
     description: "Lorum ipsum kickoff event",
+    date: new Date("2022-03-22"),
     id: 1,
   },
   {
     title: "Social Event",
     location: "Oslo",
     description: "Lorum ipsum social event",
+    date: new Date("2022-04-09"),
     id: 2,
   },
   {
     title: "Another Event",
     location: "Oslo",
     description: "Lorum ipsum another event",
+    date: new Date("2022-04-15"),
     id: 3,
   },
 ];

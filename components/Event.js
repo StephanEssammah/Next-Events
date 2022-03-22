@@ -6,7 +6,7 @@ import Modal from "./Modal";
 import Image from "next/image";
 import { GoLocation } from "react-icons/go";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { BsFillCalendarDateFill } from "react-icons/bs";
+import Calendar from "./Calendar";
 
 const Event = ({ event, favorite }) => {
   const router = useRouter();
@@ -54,7 +54,7 @@ const Event = ({ event, favorite }) => {
               <p>{event.location}</p>
             </div>
           </div>
-          <BsFillCalendarDateFill size="2em" />
+          <Calendar date={event.date} />
         </div>
         <div className="absolute right-0 p-4">
           {fav ? (
