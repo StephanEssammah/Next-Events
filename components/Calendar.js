@@ -1,8 +1,9 @@
 import React from "react";
 
 const Calendar = ({ date }) => {
-  const month = date.toLocaleDateString("en-GB", { month: "short" });
-  const day = date.toLocaleDateString("en-GB", { day: "numeric" });
+  const dateObject = new Date(date);
+  const month = dateObject.toLocaleDateString("en-GB", { month: "short" });
+  const day = dateObject.toLocaleDateString("en-GB", { day: "numeric" });
 
   return (
     <div className="bg-white h-12 w-12 my-0 flex flex-col items-center justify-center rounded-xl">

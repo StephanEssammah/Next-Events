@@ -38,8 +38,15 @@ export default Favorites;
 
 export const getServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
-  const user = session.user.email;
+  if (!session) {
+    return {
+      props: {
+        favorites: [],
+      },
+    };
+  }
 
+  const user = session.user.email;
   const client = await connectToDatabase();
   const collection = client.db("Storyblok-events").collection("users");
   const document = await collection.findOne({ email: user });

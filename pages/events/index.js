@@ -7,21 +7,21 @@ export const events = [
     title: "Kickoff Event",
     location: "Oslo",
     description: "Lorum ipsum kickoff event",
-    date: new Date("2022-03-22"),
+    date: "2022-03-22",
     id: 1,
   },
   {
     title: "Social Event",
     location: "Oslo",
     description: "Lorum ipsum social event",
-    date: new Date("2022-04-09"),
+    date: "2022-04-09",
     id: 2,
   },
   {
     title: "Another Event",
     location: "Oslo",
     description: "Lorum ipsum another event",
-    date: new Date("2022-04-15"),
+    date: "2022-04-15",
     id: 3,
   },
 ];
@@ -42,8 +42,13 @@ export default function Events({ favorites }) {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
-  const user = session.user.email;
+  if (!session) {
+    return {
+      props: { favorites: [] },
+    };
+  }
 
+  const user = session.user.email;
   const client = await connectToDatabase();
   const collection = client.db("Storyblok-events").collection("users");
   const document = await collection.findOne({ email: user });

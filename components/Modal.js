@@ -12,7 +12,7 @@ const Modal = ({ setShowModal }) => {
   return (
     <div
       onClick={() => setShowModal(false)}
-      className="inset-0 absolute bg-black bg-opacity-30 flex justify-center items-center"
+      className="inset-0 absolute bg-black bg-opacity-70 flex justify-center items-center z-20"
     >
       <div className="bg-white rounded ">
         <h1 onClick={(e) => e.stopPropagation()} className="text-black  p-4">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -37,7 +37,7 @@ const Event = ({ event, favorite }) => {
         className="flex justify-between bg-gray-600 mb-4 rounded cursor-pointer relative"
         onClick={() => router.push(`/events/${event.id}`)}
       >
-        <div className="w-full h-64">
+        <div className="w-full h-64 relative">
           <Image
             className="rounded"
             src="https://images.unsplash.com/photo-1621609764095-b32bbe35cf3a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80"
