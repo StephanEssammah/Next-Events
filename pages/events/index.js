@@ -1,34 +1,11 @@
 import Event from "../../components/Event";
 import { getSession } from "next-auth/react";
 import { connectToDatabase } from "../../utils/db";
+import { getStoryblokContent } from "../../utils/storyblok";
 
-export const events = [
-  {
-    title: "Kickoff Event",
-    location: "Oslo",
-    description: "Lorum ipsum kickoff event",
-    date: "2022-03-22",
-    id: 1,
-  },
-  {
-    title: "Social Event",
-    location: "Oslo",
-    description: "Lorum ipsum social event",
-    date: "2022-04-09",
-    id: 2,
-  },
-  {
-    title: "Another Event",
-    location: "Oslo",
-    description: "Lorum ipsum another event",
-    date: "2022-04-15",
-    id: 3,
-  },
-];
-
-export default function Events({ favorites }) {
+export default function Events({ favorites, events }) {
   return (
-    <div className="flex flex-col p-4  mb-16 h-full bg-gray-800 text-white">
+    <div className="flex flex-col p-4  mb-16 h-full min-h-screen bg-gray-800 text-white">
       {events.map((event, index) =>
         favorites.includes(event.id) ? (
           <Event favorite={true} event={event} key={index} />
@@ -42,9 +19,14 @@ export default function Events({ favorites }) {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  const events = await getStoryblokContent();
+
   if (!session) {
     return {
-      props: { favorites: [] },
+      props: {
+        favorites: [],
+        events: events,
+      },
     };
   }
 
@@ -54,6 +36,9 @@ export const getServerSideProps = async (context) => {
   const document = await collection.findOne({ email: user });
 
   return {
-    props: { favorites: document.favorites },
+    props: {
+      favorites: document.favorites,
+      events: events,
+    },
   };
 };

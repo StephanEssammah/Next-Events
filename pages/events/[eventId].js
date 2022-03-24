@@ -6,11 +6,11 @@ import axios from "axios";
 import Image from "next/image";
 import Calendar from "../../components/Calendar";
 import Modal from "../../components/Modal";
-import { events } from "./index";
 import { connectToDatabase } from "../../utils/db";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
+import { getStoryblokContent } from "../../utils/storyblok";
 
 export default function Event({ event, favorite }) {
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function Event({ event, favorite }) {
       <div className="w-full h-2/5 bg-gray-400 relative">
         <Image
           className="rounded"
-          src="https://images.unsplash.com/photo-1621609764095-b32bbe35cf3a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80"
+          src={event.image}
           alt={event.title}
           layout="fill"
           objectFit="cover"
@@ -81,8 +81,9 @@ export default function Event({ event, favorite }) {
 }
 
 export const getServerSideProps = async (context) => {
-  const eventId = Number(context.params.eventId);
-  const event = events.find((event) => event.id === eventId);
+  const eventId = context.params.eventId;
+  const events = await getStoryblokContent();
+  const event = events.find((event) => event._uid === eventId);
 
   const session = await getSession({ req: context.req });
   if (!session) {

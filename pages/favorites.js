@@ -2,10 +2,10 @@ import React from "react";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import Event from "../components/Event";
-import { events } from "./events";
 import { connectToDatabase } from "../utils/db";
+import { getStoryblokContent } from "../utils/storyblok";
 
-const Favorites = ({ session, favorites }) => {
+const Favorites = ({ session, favorites, events }) => {
   const router = useRouter();
 
   if (!session) {
@@ -38,11 +38,11 @@ export default Favorites;
 
 export const getServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+  const events = await getStoryblokContent();
+
   if (!session) {
     return {
-      props: {
-        favorites: [],
-      },
+      props: {},
     };
   }
 
@@ -55,6 +55,7 @@ export const getServerSideProps = async (context) => {
     props: {
       session: session,
       favorites: document.favorites,
+      events: events,
     },
   };
 };

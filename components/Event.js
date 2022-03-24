@@ -17,7 +17,7 @@ const Event = ({ event, favorite }) => {
   const setFavorite = async (e) => {
     e.stopPropagation();
     if (session.status === "authenticated") {
-      await axios.post("/api/setFavorite", { eventId: event.id });
+      await axios.post("/api/setFavorite", { eventId: event._uid });
       setFav(true);
       return;
     }
@@ -26,7 +26,7 @@ const Event = ({ event, favorite }) => {
 
   const unFavorite = async (e) => {
     e.stopPropagation();
-    await axios.post("/api/unFavorite", { eventId: event.id });
+    await axios.post("/api/unFavorite", { eventId: event._uid });
     setFav(false);
   };
 
@@ -35,12 +35,12 @@ const Event = ({ event, favorite }) => {
       {showModal && <Modal setShowModal={setShowModal} />}
       <div
         className="flex justify-between bg-gray-600 mb-4 rounded cursor-pointer relative"
-        onClick={() => router.push(`/events/${event.id}`)}
+        onClick={() => router.push(`/events/${event._uid}`)}
       >
         <div className="w-full h-64 relative">
           <Image
             className="rounded"
-            src="https://images.unsplash.com/photo-1621609764095-b32bbe35cf3a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80"
+            src={event.image}
             alt={event.title}
             layout="fill"
             objectFit="cover"
