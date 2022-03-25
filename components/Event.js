@@ -34,7 +34,7 @@ const Event = ({ event, favorite }) => {
     <>
       {showModal && <Modal setShowModal={setShowModal} />}
       <div
-        className="flex justify-between bg-gray-600 mb-4 rounded cursor-pointer relative"
+        className="flex justify-between bg-gray-600  rounded cursor-pointer relative w-full h-full"
         onClick={() => router.push(`/events/${event._uid}`)}
       >
         <div className="w-full h-64 relative">
