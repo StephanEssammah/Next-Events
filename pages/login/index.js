@@ -7,7 +7,7 @@ export default function Login() {
   const [action, setAction] = useState("Login");
 
   return (
-    <div className="flex flex-col text-center p-4 h-screen bg-gray-800 justify-center">
+    <div className="flex flex-col text-center p-4 h-screen bg-gray-800 justify-center items-center">
       {action === "Login" && <LoginForm setAction={setAction} />}
       {action === "Register" && <RegisterForm setAction={setAction} />}
     </div>

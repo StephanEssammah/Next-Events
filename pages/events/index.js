@@ -5,7 +5,7 @@ import { getStoryblokContent } from "../../utils/storyblok";
 
 export default function Events({ favorites, events }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-full min-h-screen  bg-gray-800 text-white content-start">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 p-4 h-full min-h-screen  bg-gray-800 text-white content-start">
       {events.map((event, index) =>
         favorites.includes(event.id) ? (
           <Event favorite={true} event={event} key={index} />
