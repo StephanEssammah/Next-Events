@@ -40,7 +40,10 @@ const RegisterForm = ({ setAction }) => {
       <h1 className="text-white mb-4 font-medium text-4xl">
         Create an account
       </h1>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col w-full max-w-md"
+      >
         <div className="flex bg-white items-center p-4 rounded-t border-b-2">
           <IoMdMail className="mr-4" size="1.5em" />
           <input
