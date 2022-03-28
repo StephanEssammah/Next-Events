@@ -10,6 +10,7 @@ import { connectToDatabase } from "../../utils/db";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
+import { FaUserFriends } from "react-icons/fa";
 import { getStoryblokContent } from "../../utils/storyblok";
 
 export default function Event({ event, favorite }) {
@@ -71,11 +72,21 @@ export default function Event({ event, favorite }) {
               <GoLocation className="mr-2" />
               {event.location}
             </p>
+            <p className="flex items-center text-gray-300">
+              <FaUserFriends className="mr-2" />
+              29 people attending
+            </p>
           </div>
           <Calendar date={event.date} />
         </div>
       </div>
       <p className="text-gray-400 px-4">{event.description}</p>
+      <button
+        onClick={() => router.push("/login")}
+        className="bg-red-400 p-4 rounded font-medium my-8 mx-4 max-w-md"
+      >
+        Attend
+      </button>
     </div>
   );
 }

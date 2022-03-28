@@ -10,12 +10,12 @@ const Favorites = ({ session, favorites, events }) => {
 
   if (!session) {
     return (
-      <div className="flex flex-col text-center p-4 h-screen bg-gray-800 text-white justify-center">
+      <div className="flex flex-col text-center p-4 h-screen bg-gray-800 text-white justify-center items-center">
         <h1 className="mb-2 text-5xl font-semibold">Favorites</h1>
         <p className="mb-8">Login or signup to access favorites!</p>
         <button
           onClick={() => router.push("/login")}
-          className="bg-red-400 p-4 mb-4 rounded font-medium"
+          className="bg-red-400 p-4 mb-4 rounded font-medium w-full max-w-xs"
         >
           Go to login page
         </button>
