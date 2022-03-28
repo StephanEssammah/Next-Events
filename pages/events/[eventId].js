@@ -13,15 +13,27 @@ import { GoLocation } from "react-icons/go";
 import { FaUserFriends } from "react-icons/fa";
 import { getStoryblokContent } from "../../utils/storyblok";
 
-export default function Event({ event, favorite }) {
+export default function Event({ event, favorite, isAttending }) {
   const router = useRouter();
   const [fav, setFav] = useState(favorite);
   const [showModal, setShowModal] = useState(false);
+  const [attendStatus, setAttendStatus] = useState(
+    isAttending ? "Attending ✔" : "Attend"
+  );
   const session = useSession();
+
+  const clickAttend = async () => {
+    if (attendStatus === "Attend") {
+      await axios.post("/api/attend-event", { event: event });
+      setAttendStatus("Attending ✔");
+      return;
+    }
+    await axios.post("/api/leave-event", { event: event });
+    setAttendStatus("Attend");
+  };
 
   const setFavorite = async (e) => {
     if (session.status === "authenticated") {
-      console.log("unfav");
       await axios.post("/api/setFavorite", { eventId: event.id });
       setFav(true);
       return;
@@ -82,10 +94,10 @@ export default function Event({ event, favorite }) {
       </div>
       <p className="text-gray-400 px-4">{event.description}</p>
       <button
-        onClick={() => router.push("/login")}
+        onClick={clickAttend}
         className="bg-red-400 p-4 rounded font-medium my-8 mx-4 max-w-md"
       >
-        Attend
+        {attendStatus}
       </button>
     </div>
   );
@@ -107,12 +119,15 @@ export const getServerSideProps = async (context) => {
   const client = await connectToDatabase();
   const collection = client.db("Storyblok-events").collection("users");
   const document = await collection.findOne({ email: user });
+
   const isFavorite = document.favorites.includes(eventId);
+  const isAttending = document.events.includes(eventId);
 
   return {
     props: {
       event: event,
       favorite: isFavorite,
+      isAttending: isAttending,
     },
   };
 };

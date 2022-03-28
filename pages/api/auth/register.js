@@ -22,6 +22,8 @@ export default async function handler(req, res) {
   await collection.insertOne({
     email,
     password: hashedPassword,
+    favorites: [],
+    events: [],
   });
 
   res.status(201).json({ message: "User created!" });
