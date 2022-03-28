@@ -10,10 +10,10 @@ import { connectToDatabase } from "../../utils/db";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
-import { FaUserFriends } from "react-icons/fa";
 import { getStoryblokContent } from "../../utils/storyblok";
+import Attendants from "../../components/Attendants";
 
-export default function Event({ event, favorite, isAttending }) {
+export default function Event({ event, favorite, isAttending, attendants }) {
   const router = useRouter();
   const [fav, setFav] = useState(favorite);
   const [showModal, setShowModal] = useState(false);
@@ -84,10 +84,7 @@ export default function Event({ event, favorite, isAttending }) {
               <GoLocation className="mr-2" />
               {event.location}
             </p>
-            <p className="flex items-center text-gray-300">
-              <FaUserFriends className="mr-2" />
-              29 people attending
-            </p>
+            {attendants > 0 && <Attendants attendants={attendants} />}
           </div>
           <Calendar date={event.date} />
         </div>
@@ -117,17 +114,28 @@ export const getServerSideProps = async (context) => {
 
   const user = session.user.email;
   const client = await connectToDatabase();
-  const collection = client.db("Storyblok-events").collection("users");
-  const document = await collection.findOne({ email: user });
+  const usersCollection = client.db("Storyblok-events").collection("users");
+  const eventsCollection = client.db("Storyblok-events").collection("events");
 
-  const isFavorite = document.favorites.includes(eventId);
-  const isAttending = document.events.includes(eventId);
+  const userDocument = await usersCollection.findOne({ email: user });
+  const eventsDocument = await eventsCollection.findOne({
+    eventId: event._uid,
+  });
+
+  const attendants =
+    eventsDocument?.attendants === undefined
+      ? 0
+      : eventsDocument.attendants.length;
+
+  const isFavorite = userDocument.favorites.includes(eventId);
+  const isAttending = userDocument.events.includes(eventId);
 
   return {
     props: {
       event: event,
       favorite: isFavorite,
       isAttending: isAttending,
+      attendants: attendants,
     },
   };
 };
