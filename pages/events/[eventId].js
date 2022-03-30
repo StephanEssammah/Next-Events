@@ -47,36 +47,36 @@ export default function Event({ event, favorite, isAttending, attendants }) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-800 text-white">
+    <div className="flex flex-col h-full bg-gray-800 text-white lg:px-96">
       {showModal && <Modal setShowModal={setShowModal} />}
-      <div className="absolute w-full p-4 flex justify-between bg-gradient-to-b from-black z-10">
-        <IoMdArrowRoundBack
-          style={{ cursor: "pointer" }}
-          onClick={() => router.back()}
-          size="2em"
-        />
-        {fav ? (
-          <AiFillHeart
-            onClick={unFavorite}
-            className="drop-shadow"
-            size="2em"
-          />
-        ) : (
-          <AiOutlineHeart
-            onClick={setFavorite}
-            style={{ cursor: "pointer" }}
-            size="2em"
-          />
-        )}
-      </div>
-      <div className="w-full h-2/5 bg-gray-400 relative">
+      <div className="w-full h-2/5 bg-gray-400 relative lg:rounded lg:mt-8">
         <Image
-          className="rounded"
+          className="lg:rounded"
           src={event.image}
           alt={event.title}
           layout="fill"
           objectFit="cover"
         />
+        <div className="absolute w-full p-4 flex justify-between bg-gradient-to-b from-black z-10 lg:rounded">
+          <IoMdArrowRoundBack
+            className="drop-shadow cursor-pointer"
+            onClick={() => router.back()}
+            size="2em"
+          />
+          {fav ? (
+            <AiFillHeart
+              onClick={unFavorite}
+              className="drop-shadow cursor-pointer"
+              size="2em"
+            />
+          ) : (
+            <AiOutlineHeart
+              onClick={setFavorite}
+              className="drop-shadow cursor-pointer"
+              size="2em"
+            />
+          )}
+        </div>
         <div className="absolute w-full bottom-0 flex justify-between p-4 bg-gradient-to-t from-gray-800 via-gray-800">
           <div>
             <h1 className="text-3xl font-semibold">{event.title}</h1>

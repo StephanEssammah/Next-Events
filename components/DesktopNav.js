@@ -17,19 +17,27 @@ const DesktopNav = () => {
   };
 
   return (
-    <div className="sticky top-0 z-10 bg-slate-600 hidden w-full py-4 px-20 justify-between items-center  text-white lg:flex">
+    <div className="sticky top-0 z-10 bg-slate-600 hidden w-full py-2 px-20 justify-between items-center  text-white lg:flex">
       <div className="flex gap-8 font-bold">
-        <Link href="/">Home</Link>
-        <Link href="/events">Events</Link>
-        <Link href="/favorites">Favorites</Link>
+        <Link href="/">
+          <a className="hover:text-red-400">Home</a>
+        </Link>
+        <Link href="/events">
+          <a className="hover:text-red-400">Events</a>
+        </Link>
+        <Link href="/favorites">
+          <a className="hover:text-red-400">Favorites</a>
+        </Link>
         <Link href={session.status === "authenticated" ? "/profile" : "/login"}>
-          Profile
+          <a className="hover:text-red-400">
+            {session.status === "authenticated" ? "Profile" : "Login"}
+          </a>
         </Link>
       </div>
       <input
         type="text"
         placeholder="Search"
-        className="p-2 rounded bg-white bg-opacity-10 border-gray-500 border"
+        className="p-2 rounded bg-white bg-opacity-20 border-gray-400 border"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={(e) => handleSearch(e)}
