@@ -3,7 +3,6 @@ import { getSession } from "next-auth/react";
 import { connectToDatabase } from "../../utils/db";
 import { getStoryblokContent } from "../../utils/storyblok";
 import Searchbar from "../../components/Searchbar";
-import { sortEventsBySimilarity } from "../../utils/searchUtils";
 
 export default function Search({ favorites, events }) {
   return (
@@ -21,16 +20,20 @@ export default function Search({ favorites, events }) {
 }
 
 export const getServerSideProps = async (context) => {
-  console.log("SSR");
   const session = await getSession({ req: context.req });
-  const events = await getStoryblokContent();
-  const sortedEvents = sortEventsBySimilarity(context.query.search, events);
+  const allEvents = await getStoryblokContent();
+  const matchingEvents = allEvents.filter((event, index) => {
+    if (index >= 9) return false;
+    return event.title
+      .toLowerCase()
+      .includes(context.query.search.toLowerCase());
+  });
 
   if (!session) {
     return {
       props: {
         favorites: [],
-        events: sortedEvents,
+        events: matchingEvents,
       },
     };
   }
@@ -43,7 +46,7 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       favorites: document.favorites,
-      events: sortedEvents,
+      events: matchingEvents,
     },
   };
 };
