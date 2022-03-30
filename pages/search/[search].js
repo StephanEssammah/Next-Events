@@ -3,18 +3,26 @@ import { getSession } from "next-auth/react";
 import { connectToDatabase } from "../../utils/db";
 import { getStoryblokContent } from "../../utils/storyblok";
 import Searchbar from "../../components/Searchbar";
+import MobileNav from "../../components/MobileNav";
+import DesktopNav from "../../components/DesktopNav";
 
 export default function Search({ favorites, events }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 p-4 pb-20 h-full min-h-screen  bg-gray-800 text-white content-start">
-      <Searchbar />
-      {events.map((event, index) =>
-        favorites.includes(event.id) ? (
-          <Event favorite={true} event={event} key={index} />
-        ) : (
-          <Event favorite={false} event={event} key={index} />
-        )
-      )}
+    <div className="flex flex-col h-screen">
+      <DesktopNav />
+      <div className="flex flex-col h-full p-4 bg-gray-800 justify-between lg:px-20">
+        <Searchbar />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4   h-full   text-white content-start">
+          {events.map((event, index) =>
+            favorites.includes(event.id) ? (
+              <Event favorite={true} event={event} key={index} />
+            ) : (
+              <Event favorite={false} event={event} key={index} />
+            )
+          )}
+        </div>
+      </div>
+      <MobileNav />
     </div>
   );
 }
@@ -38,14 +46,13 @@ export const getServerSideProps = async (context) => {
     };
   }
 
-  const user = session.user.email;
   const client = await connectToDatabase();
   const collection = client.db("Storyblok-events").collection("users");
-  const document = await collection.findOne({ email: user });
+  const userDocument = await collection.findOne({ email: session.user.email });
 
   return {
     props: {
-      favorites: document.favorites,
+      favorites: userDocument.favorites,
       events: matchingEvents,
     },
   };

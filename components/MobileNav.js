@@ -5,12 +5,12 @@ import { IoMdListBox } from "react-icons/io";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-const Navbar = () => {
+const MobileNav = () => {
   const router = useRouter();
   const session = useSession();
 
   return (
-    <div className="fixed bottom-0 z-10 bg-slate-600 flex w-full p-4 justify-between text-white">
+    <div className="sticky bottom-0 z-10 bg-slate-600 flex w-full p-4 justify-between text-white lg:hidden">
       <AiOutlineHome
         style={{ cursor: "pointer" }}
         onClick={() => router.push("/")}
@@ -39,4 +39,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default MobileNav;

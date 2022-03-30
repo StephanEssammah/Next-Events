@@ -4,32 +4,43 @@ import { getSession } from "next-auth/react";
 import Event from "../components/Event";
 import { connectToDatabase } from "../utils/db";
 import { getStoryblokContent } from "../utils/storyblok";
+import MobileNav from "../components/MobileNav";
+import DesktopNav from "../components/DesktopNav";
 
 const Favorites = ({ session, favorites, events }) => {
   const router = useRouter();
 
   if (!session) {
     return (
-      <div className="flex flex-col text-center p-4 h-screen bg-gray-800 text-white justify-center items-center">
-        <h1 className="mb-2 text-5xl font-semibold">Favorites</h1>
-        <p className="mb-8">Login or signup to access favorites!</p>
-        <button
-          onClick={() => router.push("/login")}
-          className="bg-red-400 p-4 mb-4 rounded font-medium w-full max-w-xs"
-        >
-          Go to login page
-        </button>
-      </div>
+      <>
+        <div className="flex flex-col text-center p-4 h-screen bg-gray-800 text-white justify-center items-center">
+          <h1 className="mb-2 text-5xl font-semibold">Favorites</h1>
+          <p className="mb-8">Login or signup to access favorites!</p>
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-red-400 p-4 mb-4 rounded font-medium w-full max-w-xs"
+          >
+            Go to login page
+          </button>
+        </div>
+        <MobileNav />
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col p-4 h-screen bg-gray-800 text-white">
-      <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
-      {events.map((event, index) => {
-        if (favorites.includes(event.id))
-          return <Event favorite={true} event={event} key={index} />;
-      })}
+    <div className="flex flex-col h-screen">
+      <DesktopNav />
+      <div className="flex flex-col p-4 h-full bg-gray-800 text-white lg:px-20">
+        <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {events.map((event, index) => {
+            if (favorites.includes(event._uid))
+              return <Event favorite={true} event={event} key={index} />;
+          })}
+        </div>
+      </div>
+      <MobileNav />
     </div>
   );
 };
