@@ -9,9 +9,11 @@ import Modal from "../../components/Modal";
 import { connectToDatabase } from "../../utils/db";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { GoLocation } from "react-icons/go";
+
 import { getStoryblokContent } from "../../utils/storyblok";
 import Attendants from "../../components/Attendants";
+import EventDetailsMobile from "../../components/EventDetailsMobile";
+import EventDetailsDesktop from "../../components/EventDetailsDesktop";
 
 export default function Event({ event, favorite, isAttending, attendants }) {
   const router = useRouter();
@@ -47,9 +49,9 @@ export default function Event({ event, favorite, isAttending, attendants }) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-800 text-white lg:px-96">
+    <div className="flex flex-col max-w-7xl bg-gray-800 text-white lg:px-16 lg:grid grid-cols-2 lg:items-center lg:align-center my-0 mx-auto lg:mt-24">
       {showModal && <Modal setShowModal={setShowModal} />}
-      <div className="w-full h-2/5 bg-gray-400 relative lg:rounded lg:mt-8">
+      <div className="w-full h-96 bg-gray-400 relative lg:rounded lg:mt-8">
         <Image
           className="lg:rounded"
           src={event.image}
@@ -77,25 +79,18 @@ export default function Event({ event, favorite, isAttending, attendants }) {
             />
           )}
         </div>
-        <div className="absolute w-full bottom-0 flex justify-between p-4 bg-gradient-to-t from-gray-800 via-gray-800">
-          <div>
-            <h1 className="text-3xl font-semibold">{event.title}</h1>
-            <p className="flex items-center text-gray-300">
-              <GoLocation className="mr-2" />
-              {event.location}
-            </p>
-            {attendants > 0 && <Attendants attendants={attendants} />}
-          </div>
-          <Calendar date={event.date} />
-        </div>
+        <EventDetailsMobile event={event} attendants={attendants} />
       </div>
-      <p className="text-gray-400 px-4">{event.description}</p>
-      <button
-        onClick={clickAttend}
-        className="bg-red-400 p-4 rounded font-medium my-8 mx-4 max-w-md"
-      >
-        {attendStatus}
-      </button>
+      <div className="p-4">
+        <EventDetailsDesktop event={event} attendants={attendants} />
+        <p className="text-gray-400">{event.description}</p>
+        <button
+          onClick={clickAttend}
+          className="bg-red-400 p-4 rounded font-medium mt-8 max-w-sm w-full"
+        >
+          {attendStatus}
+        </button>
+      </div>
     </div>
   );
 }
