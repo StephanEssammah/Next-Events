@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const RegisterForm = ({ setAction }) => {
   const router = useRouter();
@@ -37,6 +38,9 @@ const RegisterForm = ({ setAction }) => {
   });
   return (
     <>
+      <Head>
+        <title>Register</title>
+      </Head>
       <h1 className="text-white mb-4 font-medium text-4xl">
         Create an account
       </h1>

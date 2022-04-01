@@ -4,6 +4,7 @@ import { IoMdMail } from "react-icons/io";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const LoginForm = ({ setAction }) => {
   const router = useRouter();
@@ -23,8 +24,12 @@ const LoginForm = ({ setAction }) => {
       resetForm({ inputData: "" });
     },
   });
+
   return (
     <>
+      <Head>
+        <title>Login</title>
+      </Head>
       <h1 className="text-white mb-4 font-medium text-4xl">Login</h1>
       <form
         onSubmit={formik.handleSubmit}
