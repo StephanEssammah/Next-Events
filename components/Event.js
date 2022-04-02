@@ -17,7 +17,7 @@ const Event = ({ event, favorite }) => {
   const setFavorite = async (e) => {
     e.stopPropagation();
     if (session.status === "authenticated") {
-      await axios.post("/api/setFavorite", { eventId: event._uid });
+      await axios.post("/api/setFavorite", { eventTitle: event.title });
       setFav(true);
       return;
     }
@@ -26,7 +26,7 @@ const Event = ({ event, favorite }) => {
 
   const unFavorite = async (e) => {
     e.stopPropagation();
-    await axios.post("/api/unFavorite", { eventId: event._uid });
+    await axios.post("/api/unFavorite", { eventTitle: event.title });
     setFav(false);
   };
 
@@ -35,7 +35,7 @@ const Event = ({ event, favorite }) => {
       {showModal && <Modal setShowModal={setShowModal} />}
       <div
         className="flex justify-between bg-gray-600  rounded cursor-pointer relative w-full h-full"
-        onClick={() => router.push(`/events/${event._uid}`)}
+        onClick={() => router.push(`/events/${event.title}`)}
       >
         <div className="w-full h-64 relative">
           <Image

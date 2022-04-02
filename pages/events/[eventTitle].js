@@ -35,7 +35,7 @@ export default function Event({ event, favorite, isAttending, attendants }) {
 
   const setFavorite = async (e) => {
     if (session.status === "authenticated") {
-      await axios.post("/api/setFavorite", { eventId: event.id });
+      await axios.post("/api/setFavorite", { eventTitle: event.title });
       setFav(true);
       return;
     }
@@ -43,7 +43,7 @@ export default function Event({ event, favorite, isAttending, attendants }) {
   };
 
   const unFavorite = async (e) => {
-    await axios.post("/api/unFavorite", { eventId: event.id });
+    await axios.post("/api/unFavorite", { eventTitle: event.title });
     setFav(false);
   };
 
@@ -101,9 +101,9 @@ export default function Event({ event, favorite, isAttending, attendants }) {
 }
 
 export const getServerSideProps = async (context) => {
-  const eventId = context.params.eventId;
+  const eventTitle = context.params.eventTitle;
   const events = await getStoryblokContent();
-  const event = events.find((event) => event._uid === eventId);
+  const event = events.find((event) => event.title === eventTitle);
 
   const session = await getSession({ req: context.req });
   if (!session) {
@@ -127,8 +127,8 @@ export const getServerSideProps = async (context) => {
       ? 0
       : eventsDocument.attendants.length;
 
-  const isFavorite = userDocument.favorites.includes(eventId);
-  const isAttending = userDocument.events.includes(eventId);
+  const isFavorite = userDocument.favorites.includes(eventTitle);
+  const isAttending = userDocument.events.includes(event._uid);
 
   return {
     props: {

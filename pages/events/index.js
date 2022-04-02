@@ -19,7 +19,7 @@ export default function Events({ favorites, events }) {
         <Searchbar />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {events.map((event, index) =>
-            favorites.includes(event._uid) ? (
+            favorites.includes(event.title) ? (
               <Event favorite={true} event={event} key={index} />
             ) : (
               <Event favorite={false} event={event} key={index} />

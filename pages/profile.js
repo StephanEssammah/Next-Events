@@ -4,7 +4,7 @@ import { getSession } from "next-auth/react";
 import { FaEdit } from "react-icons/fa";
 import Head from "next/head";
 
-const Profile = () => {
+const Profile = ({ session }) => {
   const handleSignout = async () => {
     signOut({ callbackUrl: "http://localhost:3000/login" });
   };
@@ -23,13 +23,11 @@ const Profile = () => {
           <div>
             <div className="mb-4">
               <p className="">Email:</p>
-              <p className="text-white text-opacity-50">
-                stephan.essammah@appliedtechnology.se
-              </p>
+              <p className="text-white text-opacity-50">{session.user.email}</p>
             </div>
             <div className="mb-4">
               <p className="">Display Name:</p>
-              <p className="text-white text-opacity-50">Stephan Essammah</p>
+              <p className="text-white text-opacity-50">Display name</p>
             </div>
           </div>
         </div>

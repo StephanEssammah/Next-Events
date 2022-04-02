@@ -38,7 +38,7 @@ const Favorites = ({ session, favorites, events }) => {
         <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {events.map((event, index) => {
-            if (favorites.includes(event._uid))
+            if (favorites.includes(event.title))
               return <Event favorite={true} event={event} key={index} />;
           })}
         </div>
