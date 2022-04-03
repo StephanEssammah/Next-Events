@@ -28,7 +28,7 @@ export default function Event({ event }) {
       setFav(data.isFavorite);
     };
     if (status === "authenticated") getEventInfo();
-  }, [event.title, status]);
+  }, [event?.title, status]);
 
   const clickAttend = async () => {
     if (attendStatus === "Attend") {
