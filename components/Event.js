@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -11,8 +11,12 @@ import Calendar from "./Calendar";
 const Event = ({ event, favorite }) => {
   const router = useRouter();
   const session = useSession();
-  const [fav, setFav] = useState(favorite);
+  const [fav, setFav] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setFav(favorite);
+  }, [favorite]);
 
   const setFavorite = async (e) => {
     e.stopPropagation();

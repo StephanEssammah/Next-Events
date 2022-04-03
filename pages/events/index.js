@@ -1,11 +1,23 @@
 import Event from "../../components/Event";
-import { getSession } from "next-auth/react";
-import { connectToDatabase } from "../../utils/db";
 import { getStoryblokContent } from "../../utils/storyblok";
 import Searchbar from "../../components/Searchbar";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function Events({ favorites, events }) {
+export default function Events({ events }) {
+  const [favs, setFavs] = useState([]);
+  const { status } = useSession();
+
+  useEffect(() => {
+    const getFavorites = async () => {
+      const { data } = await axios.get("/api/get-favorites");
+      setFavs(data.favs);
+    };
+    if (status === "authenticated") getFavorites();
+  }, [status]);
+
   return (
     <>
       <Head>
@@ -19,7 +31,7 @@ export default function Events({ favorites, events }) {
         <Searchbar />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {events.map((event, index) =>
-            favorites.includes(event.title) ? (
+            favs.includes(event.title) ? (
               <Event favorite={true} event={event} key={index} />
             ) : (
               <Event favorite={false} event={event} key={index} />
@@ -31,27 +43,10 @@ export default function Events({ favorites, events }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+export const getStaticProps = async () => {
   const events = await getStoryblokContent();
-
-  if (!session) {
-    return {
-      props: {
-        favorites: [],
-        events: events,
-      },
-    };
-  }
-
-  const user = session.user.email;
-  const client = await connectToDatabase();
-  const collection = client.db("Storyblok-events").collection("users");
-  const document = await collection.findOne({ email: user });
-
   return {
     props: {
-      favorites: document.favorites,
       events: events,
     },
   };
