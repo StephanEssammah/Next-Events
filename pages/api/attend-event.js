@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   await userCollection.updateOne(
     { email: user },
-    { $push: { events: event._uid } }
+    { $push: { events: event.title } }
   );
 
   res.status(201).json({ message: "Attendant added." });

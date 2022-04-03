@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   await userCollection.updateOne(
     { email: user },
-    { $pull: { events: event._uid } }
+    { $pull: { events: event.title } }
   );
 
   res.status(201).json({ message: "Left event" });

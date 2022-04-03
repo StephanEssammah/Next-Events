@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 import axios from "axios";
 import Image from "next/image";
 import Modal from "../../components/Modal";
-import { connectToDatabase } from "../../utils/db";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
@@ -14,14 +12,23 @@ import EventDetailsMobile from "../../components/EventDetailsMobile";
 import EventDetailsDesktop from "../../components/EventDetailsDesktop";
 import Head from "next/head";
 
-export default function Event({ event, favorite, isAttending, attendants }) {
+export default function Event({ event }) {
   const router = useRouter();
-  const [fav, setFav] = useState(favorite);
+  const [fav, setFav] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [attendStatus, setAttendStatus] = useState(
-    isAttending ? "Attending ✔" : "Attend"
-  );
-  const session = useSession();
+  const [attendStatus, setAttendStatus] = useState("Attend");
+  const [attendants, setAttendants] = useState(0);
+  const { status } = useSession();
+
+  useEffect(() => {
+    const getEventInfo = async () => {
+      const { data } = await axios.get(`/api/event-info/${event.title}`);
+      setAttendants(data.attendants);
+      setAttendStatus(data.isAttending ? "Attending ✔" : "Attend");
+      setFav(data.isFavorite);
+    };
+    if (status === "authenticated") getEventInfo();
+  }, [event.title, status]);
 
   const clickAttend = async () => {
     if (attendStatus === "Attend") {
@@ -34,7 +41,7 @@ export default function Event({ event, favorite, isAttending, attendants }) {
   };
 
   const setFavorite = async (e) => {
-    if (session.status === "authenticated") {
+    if (status === "authenticated") {
       await axios.post("/api/setFavorite", { eventTitle: event.title });
       setFav(true);
       return;
@@ -46,6 +53,10 @@ export default function Event({ event, favorite, isAttending, attendants }) {
     await axios.post("/api/unFavorite", { eventTitle: event.title });
     setFav(false);
   };
+
+  if (!event) {
+    return <div className="h-full w-full bg-gray-800"></div>;
+  }
 
   return (
     <>
@@ -100,42 +111,24 @@ export default function Event({ event, favorite, isAttending, attendants }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
+export const getStaticProps = async (context) => {
   const eventTitle = context.params.eventTitle;
-  const events = await getStoryblokContent();
-  const event = events.find((event) => event.title === eventTitle);
-
-  const session = await getSession({ req: context.req });
-  if (!session) {
-    return {
-      props: { event },
-    };
-  }
-
-  const user = session.user.email;
-  const client = await connectToDatabase();
-  const usersCollection = client.db("Storyblok-events").collection("users");
-  const eventsCollection = client.db("Storyblok-events").collection("events");
-
-  const userDocument = await usersCollection.findOne({ email: user });
-  const eventsDocument = await eventsCollection.findOne({
-    eventId: event._uid,
-  });
-
-  const attendants =
-    eventsDocument?.attendants === undefined
-      ? 0
-      : eventsDocument.attendants.length;
-
-  const isFavorite = userDocument.favorites.includes(eventTitle);
-  const isAttending = userDocument.events.includes(event._uid);
+  const allEvents = await getStoryblokContent();
+  const event = allEvents.find((event) => event.title === eventTitle);
 
   return {
-    props: {
-      event: event,
-      favorite: isFavorite,
-      isAttending: isAttending,
-      attendants: attendants,
-    },
+    props: { event },
+    revalidate: 600,
+  };
+};
+
+export const getStaticPaths = async () => {
+  const allEvents = await getStoryblokContent();
+  const titles = allEvents.map((event) => event.title);
+  const paths = titles.map((title) => ({ params: { eventTitle: title } }));
+
+  return {
+    paths: paths,
+    fallback: true,
   };
 };
