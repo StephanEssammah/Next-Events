@@ -20,11 +20,8 @@ export default function Home() {
           Featured Events
         </button>
         <button
-          className="p-4 rounded font-medium w-64"
-          style={{
-            background: "none",
-            border: "4px solid rgb(248 113 113 / var(--tw-bg-opacity))",
-          }}
+          className="p-4 rounded font-medium w-64 border-4 border-red-400"
+          onClick={() => router.push("/events")}
         >
           All events
         </button>

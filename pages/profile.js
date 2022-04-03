@@ -1,13 +1,26 @@
 import React from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
-import { getSession } from "next-auth/react";
-import { FaEdit } from "react-icons/fa";
 import Head from "next/head";
+import { FaEdit } from "react-icons/fa";
 
-const Profile = ({ session }) => {
+const Profile = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
+
   const handleSignout = async () => {
-    signOut({ callbackUrl: "http://localhost:3000/login" });
+    signOut({ callbackUrl: "/login" });
   };
+
+  if (status === "loading") {
+    return <div className="h-full w-full bg-gray-800"></div>;
+  }
 
   return (
     <>
@@ -43,19 +56,3 @@ const Profile = ({ session }) => {
 };
 
 export default Profile;
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-
-  if (!session)
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-
-  return {
-    props: { session },
-  };
-};
