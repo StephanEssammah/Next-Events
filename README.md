@@ -2,7 +2,7 @@
 
 Web app that shows upcomming events, built with Next.js, storyblok CMS, mongoDB and Tailwind CSS.
 
-[Live demo deployd on Vercel](https://stephan-events.vercel.app/)
+[Live demo deployed on Vercel](https://stephan-events.vercel.app/)
 
 ### Features:
 
@@ -12,7 +12,7 @@ Web app that shows upcomming events, built with Next.js, storyblok CMS, mongoDB 
 - Authorization with Next-auth.
 
 ### To-do:
-- Pages like /search and /favorites are temporarely using server-side rendering, but will be changed to static pages.
+- Pages like /search and /favorites are **temporarely using server-side rendering, but will be changed to static pages.**
 
 
 ### Photos:
