@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      "images.unsplash.com",
       "assets.website-files.com",
       "images.squarespace-cdn.com",
+      "i.ibb.co",
     ],
   },
 };

@@ -27,9 +27,9 @@ export default function Events({ events }) {
           content="Find popular upcoming events, near your location!"
         />
       </Head>
-      <div className="flex flex-col p-4 bg-gray-800   text-white content-start lg:px-20">
+      <div className="flex flex-col p-4 text-white content-start items-center">
         <Searchbar />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 max-w-screen-2xl my-0 w-full">
           {events.map((event, index) =>
             favs.includes(event.title) ? (
               <Event favorite={true} event={event} key={index} />

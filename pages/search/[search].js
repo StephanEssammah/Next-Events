@@ -12,9 +12,9 @@ export default function Search({ favorites, events }) {
         <title>Search Events</title>
         <meta name="description" content="Search for upcoming events!" />
       </Head>
-      <div className="flex flex-col h-full p-4 bg-gray-800 justify-between lg:px-20">
+      <div className="flex flex-col h-full p-4 bg-gray-800 justify-between lg:px-20 items-center">
         <Searchbar />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4   h-full   text-white content-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4   h-full   text-white content-start max-w-screen-2xl w-full">
           {events.map((event, index) =>
             favorites.includes(event.title) ? (
               <Event favorite={true} event={event} key={index} />
