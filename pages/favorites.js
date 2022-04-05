@@ -1,15 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Event from "../components/Event";
-import { connectToDatabase } from "../utils/db";
-import { getStoryblokContent } from "../utils/storyblok";
 import Head from "next/head";
+import axios from "axios";
 
-const Favorites = ({ session, favorites, events }) => {
+const Favorites = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!session) {
+  useEffect(() => {
+    const getEvents = async () => {
+      console.log("getting events");
+      const { data } = await axios.get("/api/get-favorite-events");
+      setEvents(data.favoriteEvents);
+      setLoading(false);
+    };
+
+    if (status === "authenticated") {
+      getEvents();
+    }
+  }, [status]);
+
+  if (status === "loading") {
+    return (
+      <>
+        <Head>
+          <title>Favorites</title>
+        </Head>
+        <div className="flex flex-col text-center p-4 h-full bg-gray-800 text-white justify-center items-center"></div>
+      </>
+    );
+  }
+
+  if (status === "unauthenticated") {
     return (
       <>
         <Head>
@@ -38,10 +64,13 @@ const Favorites = ({ session, favorites, events }) => {
         <div className="w-full max-w-screen-2xl">
           <h1 className="mb-4 text-5xl font-semibold">Favorites</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {events.map((event, index) => {
-              if (favorites.includes(event.title))
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              events.map((event, index) => {
                 return <Event favorite={true} event={event} key={index} />;
-            })}
+              })
+            )}
           </div>
         </div>
       </div>
@@ -50,26 +79,3 @@ const Favorites = ({ session, favorites, events }) => {
 };
 
 export default Favorites;
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
-  if (!session) {
-    return {
-      props: {},
-    };
-  }
-
-  const events = await getStoryblokContent();
-  const user = session.user.email;
-  const client = await connectToDatabase();
-  const collection = client.db("Storyblok-events").collection("users");
-  const document = await collection.findOne({ email: user });
-
-  return {
-    props: {
-      session: session,
-      favorites: document.favorites,
-      events: events,
-    },
-  };
-};
