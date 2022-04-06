@@ -20,7 +20,7 @@ const LoginForm = ({ setAction }) => {
         email: inputData.email,
         password: inputData.password,
       });
-      if (!result.error) router.replace("/events");
+      if (!result.error) return router.replace("/events");
       resetForm({ inputData: "" });
     },
   });

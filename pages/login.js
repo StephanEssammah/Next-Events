@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import { useSession } from "next-auth/react";
@@ -8,10 +8,16 @@ export default function Login() {
   const [action, setAction] = useState("Login");
   const { status } = useSession();
   const router = useRouter();
+  const initialLoad = useRef(true);
 
   useEffect(() => {
-    if (status === "authenticated") router.push("/profile");
-  }, [status, router]);
+    if (initialLoad.current && status === "authenticated") {
+      return router.push("/profile");
+    }
+    if (initialLoad.current && status === "unauthenticated") {
+      initialLoad.current = false;
+    }
+  }, [status, router, initialLoad]);
 
   if (status === "unauthenticated") {
     return (

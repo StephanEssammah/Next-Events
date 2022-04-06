@@ -13,7 +13,6 @@ const Favorites = () => {
 
   useEffect(() => {
     const getEvents = async () => {
-      console.log("getting events");
       const { data } = await axios.get("/api/get-favorite-events");
       setEvents(data.favoriteEvents);
       setLoading(false);
