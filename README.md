@@ -6,14 +6,10 @@ Web app that shows upcomming events, built with Next.js, storyblok CMS, mongoDB 
 
 ### Features:
 
-- /Events and /Events/[eventTitle] use Incremental Static Generation with data from storyblok for good SEO and speed.
+- /Events and /Events/[eventTitle] pages use Incremental Static Generation with data from storyblok for good SEO and speed.
 - Frequently changing data like a users favorites or amount of attendants for an event is fetched afterward from the client.
 - Fully responsive design, different navbars for mobile & desktop etc.
 - Authorization with Next-auth.
-
-### To-do:
-- Pages like /search and /favorites are **temporarely using server-side rendering, but will be changed to static pages.**
-
 
 ### Photos:
 
